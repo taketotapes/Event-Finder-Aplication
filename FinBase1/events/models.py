@@ -3,6 +3,19 @@ from users.models import User
 
 
 class Event(models.Model):
+    """
+    Model representing an event.
+    Attributes:
+        organizer (ForeignKey): Reference to the User who organized the event.
+        title (CharField): Title of the event.
+        description (TextField): Description of the event.
+        date (DateField): Date of the event.
+        location (CharField): Location of the event.
+        category (CharField): Category of the event.
+        capacity (PositiveIntegerField): Maximum capacity of attendees for the event.
+        bookings (PositiveIntegerField): Number of bookings made for the event.
+    """
+
     organizer = models.ForeignKey(User, related_name='events_organized', on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     description = models.TextField()
@@ -20,6 +33,14 @@ class Event(models.Model):
 
 
 class Attendance(models.Model):
+    """
+    Model representing attendance of users at events.
+    Attributes:
+        event (ForeignKey): Reference to the Event being attended.
+        user (ForeignKey): Reference to the User attending the event.
+        num_tickets (PositiveIntegerField): Number of tickets reserved by the user for the event.
+    """
+
     event = models.ForeignKey(Event, related_name='attendees', on_delete=models.CASCADE)
     user = models.ForeignKey(User, related_name='attended_events', on_delete=models.CASCADE)
     num_tickets = models.PositiveIntegerField(default=1)

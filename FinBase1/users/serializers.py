@@ -4,22 +4,22 @@ from .models import User
 
 class UserSerializer(serializers.ModelSerializer):
     """
-       Сериализатор для пользователя.
+       Serializer for the user.
 
-       Поля:
-       - id: Уникальный идентификатор пользователя (тип: целое число).
-       - username: Имя пользователя (тип: строка).
-       - first_name: Имя пользователя (тип: строка).
-       - last_name: Фамилия пользователя (тип: строка).
-       - country: Страна пользователя (тип: строка).
-       - city: Город пользователя (тип: строка).
-       - street: Улица пользователя (тип: строка).
-       - phone: Номер телефона пользователя (тип: целое число).
-       - telegram_url: URL профиля Telegram пользователя (тип: строка).
-       - password: Пароль пользователя (тип: строка, доступен только для записи).
+       Fields:
+       - id: Unique user identifier (type: integer).
+       - username: Username (type: string).
+       - first_name: User's name (type: string).
+       - last_name: User's last name (type: string).
+       - country: User's country (type: string).
+       - city: User's city (type: string).
+       - street: User street (type: string).
+       - phone: User's phone number (type: integer).
+       - telegram_url: URL of the user's Telegram profile (type: string).
+       - password: User password (type: string, write-only).
 
-       Примечания:
-       - Поле "password" доступно только для записи (write_only=True), и не включено в выходные данные по умолчанию.
+       Notes:
+       - The "password" field is write-only (write_only=True), and is not included in the output by default.
     """
     class Meta:
         model = User
@@ -29,14 +29,14 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserPassChangeSerializer(serializers.Serializer):
     """
-        Сериализатор для изменения пароля пользователя.
+        Serializer for changing user password.
 
-        Поля:
-        - old_pass: Старый пароль пользователя (тип: строка, обязательное поле).
-        - new_pass: Новый пароль пользователя (тип: строка, обязательное поле).
+        Fields:
+        - old_pass: Old user password (type: string, required field).
+        - new_pass: New user password (type: string, required field).
 
-        Примечания:
-        - Оба поля обязательны для заполнения.
+        Notes:
+        - Both fields are required.
     """
     old_pass = serializers.CharField(required=True)
     new_pass = serializers.CharField(required=True)

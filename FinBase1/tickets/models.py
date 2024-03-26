@@ -5,6 +5,28 @@ from django.db.models import Count, Sum
 
 
 class Ticket(models.Model):
+    """
+    Model representing a ticket for an event.
+
+    Attributes:
+        event (ForeignKey): The event for which the ticket is purchased.
+            Related name: 'event'
+            On deletion of the event, the ticket is also deleted (CASCADE).
+        owner (ForeignKey): The user who purchased the ticket.
+            Related name: 'owner'
+            On deletion of the user, the ticket is also deleted (CASCADE).
+        price (DecimalField): The price of the ticket.
+        purchase_date (DateTimeField): The date and time when the ticket was purchased. Automatically set to the current
+        date and time when the ticket is created.
+        num_tickets (PositiveIntegerField): The number of tickets purchased.
+        timestamp (DateTimeField): The date and time when the ticket was last updated or created. Automatically set to
+        the current date and time when the ticket is updated or created.
+
+        Methods:
+            __str__: Returns a string representation of the ticket, including the event title.
+            save: Custom save method to ensure that the ticket price cannot be changed by anyone other than the event
+                organizer, and to check if there are enough available tickets for purchase before saving.
+        """
     event = models.ForeignKey(Event, related_name='event', on_delete=models.CASCADE)
     owner = models.ForeignKey(User, related_name='owner', on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -16,6 +38,10 @@ class Ticket(models.Model):
         return f"Ticket for {self.event.title}"
 
     def save(self, *args, **kwargs):
+        """
+        Custom save method to ensure that the ticket price cannot be changed by anyone other than the event organizer,
+        and to check if there are enough available tickets for purchase before saving.
+        """
         if self.pk:
             if self.owner != self.event.organizer:
                 raise ValueError('Only the organizer can change the ticket price.')

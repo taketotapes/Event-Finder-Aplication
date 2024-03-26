@@ -6,15 +6,15 @@ from users.models import User
 
 class UserSerializer(serializers.ModelSerializer):
     """
-        Сериализатор для пользователя.
+        Serializer for user.
 
-        Поля:
-        - id: Уникальный идентификатор пользователя (тип: целое число).
-        - first_name: Имя пользователя (тип: строка).
-        - last_name: Фамилия пользователя (тип: строка).
+        Fields:
+        - id: Unique user identifier (type: integer).
+        - first_name: Username (type: string).
+        - last_name: User Last name (type: string).
 
-        Примечания:
-        - Поле "id" автоматически генерируется и доступно только для чтения.
+        Notes:
+        - The "id" field is automatically generated and is read-only.
     """
     class Meta:
         model = User
@@ -23,21 +23,21 @@ class UserSerializer(serializers.ModelSerializer):
 
 class EventSerializer(serializers.ModelSerializer):
     """
-       Сериализатор для события.
+       Serializer for the event.
 
-       Поля:
-       - attendees_count: Количество участников события (тип: целое число, доступно только для чтения).
-       - organizer: Организатор события (тип: объект пользователя, сериализуемый с помощью UserSerializer).
-       - title: Заголовок события (тип: строка).
-       - description: Описание события (тип: строка).
-       - date: Дата события (тип: дата).
-       - location: Место проведения события (тип: строка).
-       - category: Категория события (тип: строка).
-       - capacity: Вместимость события (тип: целое число).
-       - bookings: Количество бронирований на событие (тип: целое число).
+       Fields:
+       - attendees_count: Number of event participants (type: integer, read-only).
+       - organizer: Event organizer (type: user object, serialized using UserSerializer).
+       - title: Event title (type: string).
+       - description: Description of the event (type: string).
+       - date: Event date (type: date).
+       - location: Location of the event (type: string).
+       - category: Event category (type: string).
+       - capacity: Event capacity (type: integer).
+       - bookings: Number of bookings for the event (type: integer).
 
-       Примечания:
-       - Поле "attendees_count" рассчитывается с помощью метода get_attendees_count и доступно только для чтения.
+       Notes:
+       - The "attendees_count" field is calculated using the get_attendees_count method and is read-only.
     """
     organizer = UserSerializer
     attendees_count = serializers.SerializerMethodField()
@@ -49,14 +49,14 @@ class EventSerializer(serializers.ModelSerializer):
 
     def get_attendees_count(self, obj):
         """
-            Метод для получения количества участников события.
+            Method for getting the number of participants in an event.
 
-            Возвращает количество записей в связанном поле attendees модели Event.
+            Returns the number of records in the associated attendee field of the Event model.
 
-            Параметры:
-            - obj: Экземпляр объекта события.
+            Options:
+            - obj: An instance of the event object.
 
-            Возвращает:
-            - Количество участников события (тип: целое число).
+            Returns:
+            - Number of event participants (type: integer).
         """
         return obj.attendees.count()

@@ -4,13 +4,13 @@ from .models import Notification
 
 class NotificationSerializer(serializers.ModelSerializer):
     """
-        API endpoint для просмотра списка и создания новых уведомлений.
+        API endpoint for viewing the list and creating new notifications.
 
         list:
-        Получить список всех уведомлений.
+        Get a list of all notifications.
 
         create:
-        Создать новое уведомление.
+        Create a new notification.
     """
     class Meta:
         model = Notification

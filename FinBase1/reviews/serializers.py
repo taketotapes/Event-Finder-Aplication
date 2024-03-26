@@ -5,19 +5,19 @@ from .models import Review
 
 class ReviewSerializer(serializers.ModelSerializer):
     """
-    Сериализатор для отзывов.
+    Serializer for reviews.
 
-    Поля:
-    - id: Уникальный идентификатор отзыва (тип: целое число).
-    - event: Связанное с отзывом событие (тип: целое число, обязательное поле).
-    - rating: Рейтинг отзыва (тип: число от 1 до 5, обязательное поле).
-    - comment: Комментарий к отзыву (тип: текстовая строка, необязательное поле).
-    - created_at: Дата и время создания отзыва (тип: дата и время).
-    - event_info: Информация о событии, связанном с отзывом (тип: объект, только для чтения).
+    Fields:
+    - id: Unique review identifier (type: integer).
+    - event: Event associated with the review (type: integer, required field).
+    - rating: Review rating (type: number from 1 to 5, required field).
+    - comment: Comment for the review (type: text string, optional field).
+    - created_at: Date and time the review was created (type: date and time).
+    - event_info: Information about the event associated with the review (type: object, read-only).
 
-    Примечания:
-    - Поле "event_info" представляет собой сериализованное представление связанного события и доступно только для чтения.
-    - Рейтинг должен быть числом от 1 до 5.
+    Notes:
+    - The "event_info" field is a serialized representation of the associated event and is read-only.
+    - The rating must be a number from 1 to 5.
     """
     event_info = EventSerializer(source='event', read_only=True)
 

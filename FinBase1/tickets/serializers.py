@@ -4,12 +4,12 @@ from .models import Ticket, User
 
 class UserSerializer(serializers.ModelSerializer):
     """
-        Сериализатор для пользователя.
+        Serializer for the user.
 
-        Поля:
-        - id: Уникальный идентификатор пользователя (тип: целое число).
-        - first_name: Имя пользователя (тип: строка).
-        - last_name: Фамилия пользователя (тип: строка).
+        Fields:
+        - id: Unique user identifier (type: integer).
+        - first_name: User's name (type: string).
+        - last_name: User's last name (type: string).
     """
     class Meta:
         model = User
@@ -18,18 +18,18 @@ class UserSerializer(serializers.ModelSerializer):
 
 class TicketSerializer(serializers.ModelSerializer):
     """
-        Сериализатор для билета.
+        Serializer for a ticket.
 
-        Поля:
-        - event: Событие, на которое приобретен билет (тип: целое число, обязательное поле).
-        - owner: Владелец билета (тип: объект пользователя, заполняется автоматически).
-        - price: Цена билета (тип: десятичное число).
-        - num_tickets: Количество билетов (тип: целое число).
-        - purchase_date: Дата покупки билета (тип: дата).
-        - timestamp: Временная метка создания билета (тип: дата и время, только для чтения).
+        Fields:
+        - event: The event for which the ticket was purchased (type: integer, required field).
+        - owner: Ticket owner (type: user object, filled in automatically).
+        - price: Ticket price (type: decimal).
+        - num_tickets: Number of tickets (type: integer).
+        - purchase_date: Ticket purchase date (type: date).
+        - timestamp: Time stamp of ticket creation (type: date and time, read only).
 
-        Примечания:
-        - Поле "owner" автоматически заполняется текущим пользователем, который выполнил запрос на создание билета.
+        Notes:
+        - The "owner" field is automatically filled in by the current user who completed the ticket creation request.
     """
     class Meta:
         model = Ticket
@@ -37,13 +37,13 @@ class TicketSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """
-            Метод для создания нового билета.
+            Method for creating a new ticket.
 
-            Параметры:
-            - validated_data: Словарь с данными для создания билета.
+            Options:
+            - validated_data: Dictionary with data for creating a ticket.
 
-            Возвращает:
-            - Созданный объект билета.
+            Returns:
+            - Created ticket object.
         """
         validated_data['owner'] = self.context['request'].user
         return super().create(validated_data)
