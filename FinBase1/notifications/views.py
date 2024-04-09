@@ -2,6 +2,7 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from .models import Notification
 from .serializers import NotificationSerializer
+from .utils import send_notification_email
 
 
 class NotificationListCreate(generics.ListCreateAPIView):
@@ -22,7 +23,13 @@ class NotificationListCreate(generics.ListCreateAPIView):
 
         :param serializer: Serializer instance.
         """
+        notification_instance = serializer.save(user=self.request.user)
         serializer.save(user=self.request.user)
+        subject = 'New notification!'
+        message = f'Hi, {self.request.user.username}! You have a new notification: {notification_instance.message}'
+        from_email = 'your@email.address'
+        to_email = [self.request.user.email]
+        send_notification_email(subject, message, from_email, to_email)
 
 
 class NotificationRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):

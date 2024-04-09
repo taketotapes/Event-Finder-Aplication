@@ -1,4 +1,7 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 from events.models import Event, Attendance
 from users.models import User
 from django.db.models import Count, Sum
@@ -27,12 +30,19 @@ class Ticket(models.Model):
             save: Custom save method to ensure that the ticket price cannot be changed by anyone other than the event
                 organizer, and to check if there are enough available tickets for purchase before saving.
         """
+    STATUS_CHOICES = [
+        ('active', 'Активний'),
+        ('finished', 'Фінішед'),
+        ('cancelled', 'Скасований'),
+    ]
+
     event = models.ForeignKey(Event, related_name='event', on_delete=models.CASCADE)
     owner = models.ForeignKey(User, related_name='owner', on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     purchase_date = models.DateTimeField(auto_now_add=True)
     num_tickets = models.PositiveIntegerField(default=1)
     timestamp = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='active')
 
     def __str__(self):
         return f"Ticket for {self.event.title}"
@@ -51,3 +61,5 @@ class Ticket(models.Model):
         if self.num_tickets > self.event.capacity - attendees_count:
             raise ValueError("There are not enough available tickets for this event.")
         super().save(*args, **kwargs)
+
+    

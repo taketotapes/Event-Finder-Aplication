@@ -17,6 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class TicketSerializer(serializers.ModelSerializer):
+    owner_name = serializers.SerializerMethodField()
     """
         Serializer for a ticket.
 
@@ -33,7 +34,10 @@ class TicketSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Ticket
-        fields = ['event', 'owner', 'price', 'num_tickets', 'purchase_date', 'timestamp']
+        fields = ['event', 'owner', 'owner_name', 'price', 'num_tickets', 'purchase_date', 'timestamp']
+
+    def get_owner_name(self, obj):
+        return obj.owner.username
 
     def create(self, validated_data):
         """

@@ -10,3 +10,4 @@ urlpatterns = [
     path('events_detail/<int:pk>/', EventDetailView.as_view(), name='event-detail'),
 ]
 
+ 

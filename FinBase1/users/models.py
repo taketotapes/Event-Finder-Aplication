@@ -32,10 +32,9 @@ class User(AbstractUser):
     street = models.CharField(max_length=30)
     phone = models.PositiveBigIntegerField(null=True)
     telegram_url = models.CharField(
-        max_length=32, validators=[RegexValidator(
-            regex='^@[\w\d_]*$', message='Telegram URL должен начинаться'
-                                         ' с символа "@" и содержать только буквы,'
-                                         ' цифры и символ "_"')])
+        max_length=32, validators=[RegexValidator(regex='^@[\w\d_]*$', message='''Telegram URL должен начинаться'
+                                                                                с символа "@" и содержать только буквы,
+                                                                                цифры и символ "_"''')])
 
     class Meta:
         unique_together = ['first_name', 'last_name']

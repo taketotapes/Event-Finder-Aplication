@@ -1,9 +1,11 @@
-from datetime import timedelta
+from datetime import timedelta, timezone
 
 from django.db.models import Q
-from django.utils.timezone import datetime
+import datetime
 
-from rest_framework import generics
+from rest_framework import generics, status
+from rest_framework.response import Response
+
 from .models import Event
 from .serializers import EventSerializer
 from rest_framework.permissions import IsAuthenticated
